@@ -1,0 +1,136 @@
+{% block content %}
+
+
+     <!-- footer -->
+
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+<!-- <div class="container my-5"> -->
+
+  <footer class="text-center text-lg-start text-white" style="background-color: #000000; width: 100%; bottom: 0; left:0; margin: 0;">
+  <!-- Grid container -->
+ 
+  <div class="container ">
+    <!--Grid row-->
+    <div class="row mt-4">
+      <!--Grid column-->
+      <div class="col-md-3 mt-3" >
+
+        <h3 class="text-uppercase mb-4" 
+          <span style="color:#FFF">C</span>
+          <span style="color:#FFF">A</span>
+          <span style="color:#FFF">L</span>
+          <span style="color:#09F84c">O</span>
+          <span style="color:#09F84c">R</span>
+          <span style="color:#09F84c">I</span>
+          <span style="color:#09F84c">E</span>
+          &nbsp;&nbsp;
+          <span style="color:#FFF">T</span>
+          <span style="color:#FFF">R</span>
+          <span style="color:#FFF">A</span>
+          <span style="color:#09F84c">C</span>
+          <span style="color:#09F84c">K</span>
+          <span style="color:#09F84c">E</span>
+          <span style="color:#09F84c">R</span>
+        <h3>
+         
+        
+           
+        <br>
+        
+
+        <p>This application tracks your weight and calculates a recommended daily calorie intake.</p>
+ 
+      </div>
+      <!--Grid column-->
+
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3"  >
+          <h3 class="text-uppercase mb-4 font-weight-bold" style="color: bt-success;font-family: sans-serif " >Navigation</h3>
+          <br>
+          <div class="thin">
+
+                <p >
+            <a href={% url "home" %}>Home</a>
+          </p>
+          <p>
+            <a href={% url "profile" %}>Profile</a>
+          </p>
+          <p>
+            <a href={% url "createfooditem" %}>Add Food</a>
+          </p>
+          
+         
+          </div>
+
+
+            
+      </div>
+        <!-- Grid column -->
+
+        <!-- <hr class="w-100 clearfix d-md-none" /> -->
+
+      <!--Grid column-->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3" >
+        <!-- <h5 class="text-uppercase mb-4 pb-1">Search something</h5>
+
+        <div class="form-outline form-white mb-4">
+          <input type="text" id="formControlLg" class="form-control form-control-lg" />
+          <label class="form-label" for="formControlLg">Search</label>
+        </div> -->
+
+        <!-- location n contacts -->
+
+        <h3 class="text-uppercase mb-4 font-weight-bold" style="color: #09F84c; font-family: sans-serif;">Contact Us</h3>
+        <br>
+
+        <ul class="fa-ul" style="margin-left: 1.65em;">
+          <li class="mb-3">
+            <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Nairobi Kenya</span>
+          </li>
+          <li class="mb-3">
+            <span class="fa-li"><i class="fas fa-phone"></i></span><span style="color: #f2af29;">Tel: &nbsp;&nbsp; </span><a href="tel://+254 7" style="color: #fff; text-decoration-line: underline;
+            text-decoration-style: solid;"> +254 745271859</a>
+          </li>
+          <li class="mb-3">
+              <span class="fa-li"><i class="fas fa-envelope"></i></span><span style="color: #f2af29;">Email:</span> <a href="mailto:calorietracker@gmail.com" style="color: #fff; text-decoration-line: underline;
+              text-decoration-style: solid; ">calorietracker@gmail.com</a>
+          </li>
+          
+        </ul>
+
+        <!-- social icons -->
+
+        
+        <div class="mt-sm-2" >
+          <!-- facebook -->
+          <a type="button" class="btn btn-floating btn-dark btn-sm" href="#"><i class="fab fa-facebook-f"></i></a>
+          <!-- instagram -->
+          <a type="button" class="btn btn-floating btn-primary btn-sm" href="#"> <i class="fab fa-instagram"></i></a>
+          <!-- twitter -->
+          <a type="button" class="btn btn-floating btn-dark btn-sm" href="#"><i class="fab fa-twitter"></i></a>
+          <!-- linkedin -->
+          <a type="button" class="btn btn-floating btn-primary btn-sm" href=""><i class="fab fa-linkedin-in"></i></a>
+           
+          
+      </div>
+      
+      <!--Grid column-->
+
+   
+    </div>
+    <!--Grid row-->
+  </div>
+  <!-- Grid container -->
+
+  
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); font-family: 'EB Garamond', serif; ">
+    © 2022 Copyright:
+    <a class="text-white" href="/">calorie tracker</a>
+   
+  </div>
+  <!-- Copyright -->
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+</footer>
+
+{% endblock content %}

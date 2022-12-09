@@ -1,0 +1,124 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<br><br>
+<div class="row">
+	
+
+	<div class="col-md-4">
+		<h3>Total Meals consumed today: {{cnt}}</h3>
+		<div class="card card-body">
+			<table>
+				<tr>
+					<th>fooditem</th>
+					<th>Calorie</th>
+					<th>Carbs</th>
+					<th>Fats</th>
+					<th>Protien</th>
+				</tr>
+				{% for food in foodlist %}
+				<tr>
+					<td>{{food.name}}</td>
+					<td> {{food.calorie}}</td>
+					<td> {{food.carbohydrate}}</td>
+					<td> {{food.fats}}</td>
+					<td> {{food.protein}}</td>
+				</tr>
+				{% endfor %}
+			</table>
+			
+		</div>
+		<div class="">
+			
+		
+			<h4>Calorie Limit for Today: 2000</h4>
+			<h4>Total Calories consumed: {{totalCalories}}</h4>
+			<h4>Left: {{ CalorieLeft }}</h4>
+		</div>
+		<form action="{% url 'addFooditem' %}" method="POST">
+			{%csrf_token%}
+			<button type="submit" class="btn btn-success rounded-pill">
+				<span class="glyphicon glyphicon-plus "> Food</span>
+			</button>
+		</form>
+	</div>
+
+	<div class="col-md-4">
+		
+		
+		<div class=" text-center">
+			<H2 class="b-text">Hi {{ user.username }}?
+			</H2>
+			{% if profile.profile_photo %}
+			<img src="{{profile.profile_photo.url}}" alt="" style="border-radius: 50%; width: 200px; height: 200px;">
+			{%else%}
+			<img src="https://st2.depositphotos.com/1104517/11965/v/600/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
+				class="card-img-top" alt="My profile picture">
+			{% endif %}
+			<div class="card-body">
+
+				
+				<p>
+					{% if profile.bio %}
+					<small>Bio: {{ profile.bio }}</small>
+					{% else %}
+					<span class="text-danger">No about me</span>
+					{% endif %}
+				</p>
+
+				<h6>Joined on: <span class="badge rounded-pill bg-secondary text-white">
+						{{ user.date_joined|date }} </span></h6>
+
+			</div>
+			<div class="first">
+				<div>
+					<a href="{%url 'update_profile' user.id %}"
+						class="btn btn-success text-white rounded-pill">
+						Edit Your Data
+					</a>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="col-md-4">
+		<h3 class="text-center">Search  for Meals</h3>
+		<form method="get">
+			{{myfilter.form}}
+			<button class="btn btn-primary" type="submit">Submit</button>
+		</form>
+		<h3 class="text-center">Available Meals:</h3>
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<table class="table table-sm">
+						<tr>
+							<th>fooditem</th>
+							<th>Calorie</th>
+							<th>Carbs</th>
+							<th>Fats</th>
+							<th>Protien</th>
+						</tr>
+						{% for food in fooditem %}
+						<tr>
+							<td>{{food.name}}</td>
+							<td> {{food.calorie}}</td>
+							<td> {{food.carbohydrate}}</td>
+							<td> {{food.fats}}</td>
+							<td> {{food.protein}}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+<br><br><br>
+
+{% endblock %}

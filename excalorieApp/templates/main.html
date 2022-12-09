@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" 0>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <br>
+    <br>
+    <div class="container">
+        {% block content %}
+
+        <style>
+            .tab-bmi{
+          font-family: Arial;
+        }
+        /*style the tab*/
+        .tab-bmi .tab{
+          overflow:hidden;
+          border:1px solid #ccc;
+          background-color:#f1f1f1;
+        }
+        /*the buttons*/
+        .tab-bmi .tab button{
+          background-color: inherit;
+          float:left;
+          border:none;
+          cursor:pointer;
+          outline:none;
+          padding:14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+        /*add hover to the buttons*/
+        .tab-bmi .tab button:hover{
+          background-color: #ddd;
+        }
+        /*Create an active/current tablink class*/
+        .tab-bmi .tab button.active{
+          background-color:#ccc;
+        }
+        /*style the tb content*/
+        .tab-bmi .tabcontent{
+          display: none;
+          padding: 6px 12px;
+          --webkit-animation: fadeEffect 1s;
+          animation: fadeEffect 1s;
+        }
+        @-webkit-keyframes fadeEffect {
+          from {opacity:0;}
+          to {opacity: 1;}
+        }
+        @keyframes fadeEffect {
+          from {opacity:0;}
+          to {opacoty: 1;}
+        }
+        </style>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form">
+                  <!-#########################Col1###############-->
+                  <div>
+                    <div class="tab-bmi">
+                      <h3>Calculate you BMI</h3>
+                      <div class="tab">
+                        <button  class="tablinks" onclick="openUnit(event, 'metric')">Metric</button>
+                        <button  class="tablinks" onclick="openUnit(event, 'imperial')">Imperial</button>
+                      </div>
+                      <div class="tabcontent" id="metric">
+                         <form method="post">
+                           {% csrf_token %}
+                           <div class="col-12">
+                             <label for="">Weight: </label>
+                             <input type="text" name="weight-metric" class="form-control" required placeholder="kg">
+                           </div>
+                           <div class="col-12">
+                             <label for="">Height: </label>
+                             <input type="text" name="height-metric" class="form-control" required placeholder="m">
+                           </div>
+                           {% if request.user.is_authenticated %}
+                           <div class="form-check my-5">
+                             <input class="form-check-input" checked="checked" name="save" value="on" type="checkbox">
+                             <label for="" class="form-check-label">Save It.
+                               <a href="#" title="Why to save it?" data-toggle="popover" data-trigger="focus"
+                       data-content="In case you want to track your weight, you can save it.(login required)">?</a>
+                     </label>
+                           </div>
+                           {% else %}
+                           <div class="form-check my-5">
+                             <input disabled class="form-check-input" checked="checked" name="save" value="on" type="checkbox">
+                             <label for="" class="form-check-label">Save It.
+                               <a href="#" title="Why to save it?" data-toggle="popover" data-trigger="focus"
+                       data-content="In case you want to track your weight, you can save it.(login required)">?</a>
+                     </label>
+                           </div>
+                           {% endif %}
+                           <button type="submit" class="btn btn-primary" action="{% url 'home' %}">Calculate</button>
+                         </form>
+                      </div>
+                      <div class="tabcontent" id="imperial">
+                        <form method="post">
+                          {% csrf_token %}
+                          <div class="col-12">
+                            <label for="">Weight: </label>
+                            <input type="text" name="weight-imperial" class="form-control" required placeholder="lbs">
+                          </div>
+                          <div class="col-12">
+                            <label for="">Height: </label>
+                            <div class="input-group">
+                              <input type="text" name="feet" placeholder="feet" class="form-control">
+                              <input type="text" name="inches" placeholder="inches" class="form-control">
+                            </div>
+                          </div>
+                          {% if request.user.is_authenticated %}
+                          <div class="form-check my-5">
+                            <input class="form-check-input" checked="checked" name="save" value="on" type="checkbox">
+                            <label for="" class="form-check-label">Save It.
+                              <a href="#" title="Why to save it?" data-toggle="popover" data-trigger="focus"
+                                data-content="In case you want to track your weight, you can save it.(login required)">?</a>
+                             </label>
+                          </div>
+                          {% else %}
+                          <div class="form-check my-5">
+                            <input disabled class="form-check-input" checked="checked" name="save" value="on" type="checkbox">
+                            <label for="" class="form-check-label">Save It.
+                              <a href="#" title="Why to save it?" data-toggle="popover" data-trigger="focus"
+                                data-content="In case you want to track your weight, you can save it.(login required)">?</a>
+                             </label>
+                          </div>
+                          {% endif %}
+                          <button type="submit" class="btn btn-primary" action="{% url 'home' %}">Calculate</button>
+                        </form>
+                      </div>
+                    </div>
+                  <!-#########################Col2###############-->
+                  </div>
+                </div>
+                {% if bmi %}
+                  <div class="col-md-6 col-sm-12 col-xs-12">
+                    <h2>Result</h2>
+                    <p>Your BMI = {{bmi}} kg/m² | {{state}}</p>
+                    <div class="progress">
+                      <div class="progress-bar bg-danger" style="width:25%">
+                        Underweight
+                      </div>
+                      <div class="progress-bar bg-success" style="width:25%">
+                        Normal
+                      </div>
+                      <div class="progress-bar bg-warning" style="width:25%">
+                        Overweight
+                      </div>
+                      <div class="progress-bar bg-danger" style="width:25%">
+                        Obesity
+                      </div>
+                    </div>
+                    {{div|safe}}
+                  </div>
+                  
+                  {% endif %}
+             
+            </div>
+            <div class="col md-8">
+                <div class="row bg">
+            
+                    <div class="col-md-6 font-italic font-weight-bold text-center">
+                        <br><br>
+                        <h1>Gain Weight <br> in a Healthy <br> Way</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="static/images/cal.jpg" width="250" class=" " style="border-radius: 50%;" height="250" alt="A plate of a delicious meal and juice">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <br><br>
+        <h4 id="heading" class="text-center text-success">List of available Meals:</h4>
+        <!------------------------->
+        <div class="row">
+            
+            <div class="col-md-6 card">
+                <div class="">
+                    <h5 id="heading" class="text-center text-success">Breakfast</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbs</th>
+                            <th>Fats</th>
+                            <th>Protien</th>
+                            <th>Calorie</th>
+        
+                        </tr>
+                        {% for items in breakfast %}
+                        <tr>
+                            <td>{{items.name}} </td>
+                            <td>{{items.carbohydrate}} </td>
+                            <td>{{items.fats}} </td>
+                            <td>{{items.protein}} </td>
+                            <td>{{items.calorie}} </td>
+                        </tr>
+        
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6 card">
+                <div class="">
+                    <h5 id="heading" class="text-center text-success">Lunch</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbs</th>
+                            <th>Fats</th>
+                            <th>Protien</th>
+                            <th>Calorie</th>
+        
+                        </tr>
+                        {% for items in lunch %}
+                        <tr>
+                            <td>{{items.name}} </td>
+                            <td>{{items.carbohydrate}} </td>
+                            <td>{{items.fats}} </td>
+                            <td>{{items.protein}} </td>
+                            <td>{{items.calorie}} </td>
+                        </tr>
+        
+                        {% endfor %}
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            
+            <!------------------------------------------->
+            
+            <div class="col-md-6 card">
+                <div class="">
+                    <h5 id="heading" class="text-center text-success">Snacks</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbs</th>
+                            <th>Fats</th>
+                            <th>Protien</th>
+                            <th>Calorie</th>
+        
+                        </tr>
+                        {% for items in snacks %}
+                        <tr>
+                            <td>{{items.name}} </td>
+                            <td>{{items.carbohydrate}} </td>
+                            <td>{{items.fats}} </td>
+                            <td>{{items.protein}} </td>
+                            <td>{{items.calorie}} </td>
+                        </tr>
+        
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <!-------------------------------------->
+            <div class="col-md-6 card">
+                <div class="">
+                    <h5 id="heading" class="text-center text-success">Dinner</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbs</th>
+                            <th>Fats</th>
+                            <th>Protien</th>
+                            <th>Calorie</th>
+        
+                        </tr>
+                        {% for items in dinner %}
+                        <tr>
+                            <td>{{items.name}} </td>
+                            <td>{{items.carbohydrate}} </td>
+                            <td>{{items.fats}} </td>
+                            <td>{{items.protein}} </td>
+                            <td>{{items.calorie}} </td>
+                        </tr>
+        
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endblock %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static "custom.js" %}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $('[data-toggle="popover"]').popover();
+        });</script>
+    {% include 'footer.html' %}
+</body>
+
+</html>
